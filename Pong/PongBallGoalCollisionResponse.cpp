@@ -38,9 +38,10 @@ bool PongBallGoalCollisionResponse::onCollisionEvent(ska::CollisionEvent & ce) c
 		auto& wcol = *ce.wcollisionComponent;
 		if ((wcol.xaxis || wcol.yaxis) && ce.entity == m_ball) {
 			auto& pc = m_entityManager.getComponent<ska::PositionComponent>(ce.entity);
+			auto& mc = m_entityManager.getComponent<ska::MovementComponent>(ce.entity);
 			auto& hb = m_entityManager.getComponent<ska::HitboxComponent>(ce.entity);
 
-			if (pc.x + hb.xOffset <= 0) {
+			if (pc.x + hb.xOffset + mc.vx <= 0) {
 				resetBallPosition();
 			} else if (pc.x + hb.xOffset + hb.width >= m_cameraSystem.getDisplay()->w - 10) {
 				resetBallPosition();
