@@ -1,8 +1,8 @@
 #include "Game.h"
-#include "Inputs/KeyboardInputMapContext.h"
 #include "Inputs/KeyboardInputGUIContext.h"
 #include "StateScreenTitle.h"
 #include "Draw/SDLFont.h"
+#include "KeyboardInputPongContext.h"
 
 ska::GameApp& ska::GameApp::get() {
 	static Game wgc;
@@ -12,7 +12,7 @@ ska::GameApp& ska::GameApp::get() {
 
 void Game::init() {
 	/* Configure inputs types */
-	addInputContext<ska::KeyboardInputMapContext>(ska::EnumContextManager::CONTEXT_MAP);
+	addInputContext<KeyboardInputPongContext>(ska::EnumContextManager::CONTEXT_MAP);
 	addInputContext<ska::KeyboardInputGUIContext>(ska::EnumContextManager::CONTEXT_GUI);
 
 	ska::GUI::MENU_DEFAULT_THEME_PATH = "." FILE_SEPARATOR "Resources" FILE_SEPARATOR "Menu" FILE_SEPARATOR "default_theme" FILE_SEPARATOR;

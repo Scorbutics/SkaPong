@@ -20,7 +20,7 @@ public:
 	virtual ~StateScreenTitle() = default;
 
 private:
-	bool onGameEvent(ska::GameEvent& ge);
+	bool onGameEvent(ska::GameEvent& ge) const;
 
 	GUI m_gui;
 	ska::DynamicWindowIG<>* m_pressStartWindow;
