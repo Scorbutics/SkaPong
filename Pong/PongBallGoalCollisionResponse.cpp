@@ -21,7 +21,7 @@ void PongBallGoalCollisionResponse::resetBallPosition() const{
 	pc.y = m_cameraSystem.getDisplay()->h / 2;
 
 	auto& mc = m_entityManager.getComponent<ska::MovementComponent>(m_ball);
-	auto velocityPoint = ska::Point<int>::cartesian(7, ska::NumberUtils::random(-M_PI, M_PI));
+	auto velocityPoint = ska::Point<int>::cartesian(7, ska::NumberUtils::random(-M_PI / 2 + 1, M_PI / 2 - 1) + (ska::NumberUtils::random(0, 1) * M_PI ));
 	mc.vx = velocityPoint.x;
 	mc.vy = velocityPoint.y;
 }
@@ -37,16 +37,15 @@ bool PongBallGoalCollisionResponse::onCollisionEvent(ska::CollisionEvent & ce) c
 	if (ce.wcollisionComponent != nullptr) {
 		auto& wcol = *ce.wcollisionComponent;
 		if ((wcol.xaxis || wcol.yaxis) && ce.entity == m_ball) {
-			auto& pc = m_entityManager.getComponent<ska::PositionComponent>(ce.entity);
-			auto& mc = m_entityManager.getComponent<ska::MovementComponent>(ce.entity);
-			auto& hb = m_entityManager.getComponent<ska::HitboxComponent>(ce.entity);
-
-			if (pc.x + hb.xOffset + mc.vx <= 0) {
-				resetBallPosition();
-			} else if (pc.x + hb.xOffset + hb.width >= m_cameraSystem.getDisplay()->w - 10) {
-				resetBallPosition();
+			if (!wcol.blockColPosX.empty()) {
+				auto& block = wcol.blockColPosX[0];
+				if (block.x <= 0) {
+					resetBallPosition();
+				} else if (block.x + 30 >= m_cameraSystem.getDisplay()->w) {					
+					resetBallPosition();
+				}
+				return true;
 			}
-			return true;
 		}
 		return true;
 	}
