@@ -22,7 +22,6 @@ private:
 	ska::EntityManager& m_entityManager;
 
 	ska::EntityCollisionResponse m_entityCollision;
-	ska::WorldCollisionResponse m_worldCollision;
 	ska::EntityId m_ball;
 	std::unique_ptr<PongBallGoalCollisionResponse> m_scoreMaker;
 	AI m_ai;

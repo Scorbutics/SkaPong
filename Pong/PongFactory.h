@@ -11,8 +11,8 @@ private:
 public:
 	static ska::EntityId createPongBarEntity(ska::EntityManager& m_entityManager, ska::Point<float> pos);
 	static ska::EntityId createPongBallEntity(ska::EntityManager& m_entityManager, ska::Point<float> pos);
-	static ska::EntityId createTopAndBottomBoundaries(ska::EntityManager& m_entityManager, bool top, ska::Rectangle screenBox);
+	static ska::EntityId createBoundaries(ska::EntityManager& m_entityManager, int type, ska::Rectangle screenBox);
 
 	~PongFactory() = default;
-	
+
 };

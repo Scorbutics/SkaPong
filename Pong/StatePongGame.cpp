@@ -10,26 +10,26 @@
 #include "PongBallGoalCollisionResponse.h"
 
 StatePongGame::StatePongGame(StateData& data, ska::StateHolder & sh, unsigned int windowWidth, unsigned int windowHeight):
-	StateBase(data.m_entityManager, data.m_eventDispatcher, sh), 
+	StateBase(data.m_entityManager, data.m_eventDispatcher, sh),
 	m_cameraSystem(nullptr),
 	m_world(windowWidth, windowHeight),
 	m_eventDispatcher(data.m_eventDispatcher),
 	m_entityManager(data.m_entityManager),
 	m_entityCollision(data.m_eventDispatcher, data.m_entityManager),
-	m_worldCollision(m_world, data.m_eventDispatcher, data.m_entityManager),
 	m_ai(data.m_entityManager) {
 	m_cameraSystem = addLogic<ska::CameraFixedSystem>(windowWidth, windowHeight, ska::Point<int>());
 	addGraphic<ska::GraphicSystem>(m_eventDispatcher, m_cameraSystem);
 
 	addLogic<ska::MovementSystem>();
 	addLogic<ska::CollisionSystem>(m_eventDispatcher);
-	addLogic<ska::WorldCollisionSystem>(m_world, m_eventDispatcher);
 	addLogic<ska::GravitySystem>();
 	addLogic<ska::InputSystem>(m_eventDispatcher);
 
-	ska::Rectangle screenBox{30, 0, static_cast<int>(windowWidth) - 30, static_cast<int>(windowHeight)};
-	PongFactory::createTopAndBottomBoundaries(m_entityManager, true, screenBox);
-	PongFactory::createTopAndBottomBoundaries(m_entityManager, false, screenBox);
+	ska::Rectangle screenBox{0, 0, static_cast<int>(windowWidth), static_cast<int>(windowHeight)};
+	PongFactory::createBoundaries(m_entityManager, 0, screenBox);
+	PongFactory::createBoundaries(m_entityManager, 1, screenBox);
+    PongFactory::createBoundaries(m_entityManager, 2, screenBox);
+	PongFactory::createBoundaries(m_entityManager, 3, screenBox);
 
 	auto blockA = PongFactory::createPongBarEntity(m_entityManager, ska::Point<int>(10, windowHeight / 2));
 	m_enemyBar = PongFactory::createPongBarEntity(m_entityManager, ska::Point<int>(windowWidth - 30, windowHeight / 2));
