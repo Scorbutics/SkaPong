@@ -12,7 +12,6 @@
 StatePongGame::StatePongGame(StateData& data, ska::StateHolder & sh, unsigned int windowWidth, unsigned int windowHeight):
 	StateBase(data.m_entityManager, data.m_eventDispatcher, sh),
 	m_cameraSystem(nullptr),
-	m_world(windowWidth, windowHeight),
 	m_eventDispatcher(data.m_eventDispatcher),
 	m_entityManager(data.m_entityManager),
 	m_entityCollision(data.m_eventDispatcher, data.m_entityManager),

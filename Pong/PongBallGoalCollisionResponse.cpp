@@ -36,21 +36,20 @@ bool PongBallGoalCollisionResponse::onCollisionEvent(ska::CollisionEvent & ce) c
         auto& col = *ce.collisionComponent;
 
         auto entity = col.origin == m_ball ? col.target : col.origin;
+        auto& pcBall = m_entityManager.getComponent<ska::PositionComponent>(m_ball);
 
         if(isBarCollision(ce)) {
             //when collided with an entity, put a lateral acceleration on the ball depending on the velocity of the entity
             auto& mc = m_entityManager.getComponent<ska::MovementComponent>(entity);
             auto& fcBall = m_entityManager.getComponent<ska::ForceComponent>(m_ball);
             auto& pcEntity = m_entityManager.getComponent<ska::PositionComponent>(entity);
-            auto& pcBall = m_entityManager.getComponent<ska::PositionComponent>(m_ball);
             fcBall.y += mc.vy * 0.05F;
-            //fcBall.x += mc.vy * 0.05F * (pcEntity.x > pcBall.x ? -1 : 1);
             return true;
         }
         auto& hitboxEntity = m_entityManager.getComponent<ska::HitboxComponent>(entity);
 
         //when collided with left and right sides boundaries
-        if(hitboxEntity.width <= 1) {
+        if(hitboxEntity.width <= 1 || pcBall.x < 30 || pcBall.x >= m_cameraSystem.getDisplay()->w - 30) {
             resetBallPosition();
             return true;
         }

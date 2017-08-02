@@ -3,7 +3,6 @@
 #include "Core/State/StateBase.h"
 #include "Data/Events/ExtensibleGameEventDispatcher.h"
 #include "Physic/System/EntityCollisionResponse.h"
-#include "World.h"
 #include "Physic/System/WorldCollisionResponse.h"
 #include "PongBallGoalCollisionResponse.h"
 #include "AI.h"
@@ -17,7 +16,6 @@ public:
 
 private:
 	ska::CameraSystem* m_cameraSystem;
-	World m_world;
 	ska::ExtensibleGameEventDispatcher<>& m_eventDispatcher;
 	ska::EntityManager& m_entityManager;
 

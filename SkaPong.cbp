@@ -65,8 +65,6 @@
 		<Unit filename="Pong/StatePongGame.h" />
 		<Unit filename="Pong/StateScreenTitle.cpp" />
 		<Unit filename="Pong/StateScreenTitle.h" />
-		<Unit filename="Pong/World.cpp" />
-		<Unit filename="Pong/World.h" />
 		<Unit filename="Pong/gamesettings.ini" />
 		<Extensions>
 			<code_completion />

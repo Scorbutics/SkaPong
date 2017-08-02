@@ -17,6 +17,6 @@ void AI::update(ska::EntityId enemyBar, ska::EntityId ball) const{
 	auto& fEnemy = m_entityManager.getComponent<ska::MovementComponent>(enemyBar);
 
 	if(ska::NumberUtils::absolute(pcEnemy.y - pcBall.y) >= ska::NumberUtils::random(0, 100) + THRESHOLD_DISTANCE_BAR_BALL) {
-		fEnemy.vy += (pcBall.y - pcEnemy.y) * 0.005F;
+		fEnemy.ay += (pcBall.y - pcEnemy.y) * 0.005F;
 	}
 }
