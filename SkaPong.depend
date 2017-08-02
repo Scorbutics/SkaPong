@@ -274,12 +274,12 @@
 1501138064 c:\documents\perso\dev\c++\ska\ska_core\inputs\keyboardinputguicontext.h
 	"KeyboardInputContext.h"
 
-1501490008 c:\documents\perso\dev\c++\skapong\pong\statescreentitle.h
+1501691187 c:\documents\perso\dev\c++\skapong\pong\statescreentitle.h
 	"ECS/EntityManager.h"
 	"Core/State/StateBase.h"
 	"Data/Events/ExtensibleGameEventDispatcher.h"
-	"GUI.h"
 	"Utils/SubObserver.h"
+	"GUI/GUI.h"
 
 1501138064 c:\documents\perso\dev\c++\ska\ska_core\core\state\statebase.h
 	<unordered_set>
@@ -696,7 +696,7 @@
 	"Inputs/RawInputListener.h"
 	"KeyboardInputPongContext.h"
 
-1501589760 source:c:\documents\perso\dev\c++\skapong\pong\pongballgoalcollisionresponse.cpp
+1501680927 source:c:\documents\perso\dev\c++\skapong\pong\pongballgoalcollisionresponse.cpp
 	"PongBallGoalCollisionResponse.h"
 	"Data/Events/ExtensibleGameEventDispatcher.h"
 	"ECS/Basics/Physic/PositionComponent.h"

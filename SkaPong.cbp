@@ -51,8 +51,6 @@
 		</Compiler>
 		<Unit filename="Pong/AI.cpp" />
 		<Unit filename="Pong/AI.h" />
-		<Unit filename="Pong/GUI.cpp" />
-		<Unit filename="Pong/GUI.h" />
 		<Unit filename="Pong/Game.cpp" />
 		<Unit filename="Pong/Game.h" />
 		<Unit filename="Pong/KeyboardInputPongContext.cpp" />

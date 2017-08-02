@@ -2,15 +2,14 @@
 #include "ECS/EntityManager.h"
 #include "Core/State/StateBase.h"
 #include "Data/Events/ExtensibleGameEventDispatcher.h"
-#include "GUI.h"
 #include "Utils/SubObserver.h"
-
+#include "GUI/GUI.h"
 
 namespace ska {
 	class Image;
 }
 
-class StateScreenTitle : 
+class StateScreenTitle :
 	public ska::StateBase<ska::EntityManager, ska::ExtensibleGameEventDispatcher<>>,
 	public ska::SubObserver<ska::GameEvent> {
 public:
@@ -22,7 +21,7 @@ public:
 private:
 	bool onGameEvent(ska::GameEvent& ge) const;
 
-	GUI m_gui;
+	ska::GUI m_gui;
 	ska::DynamicWindowIG<>* m_pressStartWindow;
 	ska::Image* m_backgroundImage;
 };
