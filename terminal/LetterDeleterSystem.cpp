@@ -5,6 +5,7 @@
 #include "ECS/Basics/Graphic/DeleterComponent.h"
 #include "ECS/Basics/Physic/MovementComponent.h"
 #include "TerminalGUIEvent.h"
+#include "BossEnemyComponent.h"
 
 LetterDeleterSystem::LetterDeleterSystem(ska::EntityManager& entityManager, TerminalGameEventDispatcher& ged) :
 	System(entityManager),
@@ -57,7 +58,7 @@ bool LetterDeleterSystem::onCollisionEvent(ska::CollisionEvent& ce) {
 		if (cc.life <= 0) {
 			m_entityManager.removeEntity(letter);
 			TerminalGUIEvent tge(UPDATE_SCORE);
-			tge.score = 1;
+			tge.score = m_entityManager.hasComponent<BossEnemyComponent>(letter) ? 50 : 1;
 			m_eventDispatcher.ska::Observable<TerminalGUIEvent>::notifyObservers(tge);
 		}
 	}

@@ -4,6 +4,7 @@
 #include "ECS/EntityManager.h"
 #include "Core/State/StateBase.h"
 #include "LetterDeleterSystem.h"
+#include "Audio/Music.h"
 
 namespace ska {
 	class StateHolder;
@@ -28,4 +29,6 @@ private:
 	ska::Rectangle& m_screenBox;
 	ska::EntityManager& m_entityManager;
 	ska::EntityId m_bossEntity;
+
+	ska::Music m_bossBackgroundMusic;
 };

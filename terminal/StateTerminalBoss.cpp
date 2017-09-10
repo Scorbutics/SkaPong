@@ -10,7 +10,8 @@ StateTerminalBoss::StateTerminalBoss(ska::StateData<ska::EntityManager, Terminal
 	m_letterDeleterSystem(letterDeleterSystem),
 	m_screenBox(screenBox),
 	m_poa(pointOfAttraction),
-	m_bossEntity(0) {
+	m_bossEntity(0),
+	m_bossBackgroundMusic("Resources/Music/point_of_attraction_boss.mp3") {
 }
 
 void StateTerminalBoss::onEventUpdate(unsigned int ellapsedTime) {
@@ -28,6 +29,9 @@ void StateTerminalBoss::onEventUpdate(unsigned int ellapsedTime) {
 }
 
 void StateTerminalBoss::beforeLoad(std::unique_ptr<State>*) {
+	ska::SoundEvent se(&m_bossBackgroundMusic, ska::PLAY_MUSIC);
+	m_eventDispatcher.ska::Observable<ska::SoundEvent>::notifyObservers(se);
+
 	queueTask(std::make_unique<BossSpawnTask>(m_entityManager, m_screenBox, &m_bossEntity));	
 	queueTask(std::make_unique<ska::Task>([&](ska::Task&) {
 		addLogic<BossEnemySpawnSystem>(m_screenBox, m_poa);

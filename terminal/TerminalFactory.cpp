@@ -231,7 +231,7 @@ ska::EntityId TerminalFactory::createEnemyBossEntity(ska::EntityManager& entityM
 	ska::Texture at;
 
 	EnemyComponent ec;
-	ec.life = 500;
+	ec.life = 1000;
 	ec.dieOnBorder = false;
 	entityManager.addComponent<EnemyComponent>(entity, std::move(ec));
 
