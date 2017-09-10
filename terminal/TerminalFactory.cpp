@@ -11,6 +11,7 @@
 #include "CharacterComponent.h"
 #include "EnemyComponent.h"
 #include "ECS/Basics/Graphic/DeleterComponent.h"
+#include "BossEnemyComponent.h"
 
 const std::string& RESOURCES_FOLDER = "." FILE_SEPARATOR "Resources" FILE_SEPARATOR;
 
@@ -73,8 +74,7 @@ ska::EntityId TerminalFactory::createAsciiCharacterEntity(ska::EntityManager& m_
 	return entity;
 }
 
-ska::EntityId TerminalFactory::createEnemyStringEntity(ska::EntityManager& m_entityManager, ska::Rectangle& screenBox) {
-
+ska::EntityId TerminalFactory::createBaseEnemyStringEntity(ska::EntityManager& m_entityManager) {
 	auto entity = m_entityManager.createEntity();
 	ska::GraphicComponent gc;
 	ska::Texture at;
@@ -84,28 +84,12 @@ ska::EntityId TerminalFactory::createEnemyStringEntity(ska::EntityManager& m_ent
 	ec.life = 10;
 	m_entityManager.addComponent<EnemyComponent>(entity, std::move(ec));
 
-	at.loadFromText(ec.life/10.F * 32, DICTIONNARY[ska::NumberUtils::random(0, 9)], ska::Color(randomColor));
+	at.loadFromText(ec.life / 10.F * 32, DICTIONNARY[ska::NumberUtils::random(0, 9)], ska::Color(randomColor));
 	gc.sprites.push_back(at);
 	m_entityManager.addComponent<ska::GraphicComponent>(entity, std::move(gc));
 	ska::GravityAffectedComponent gac;
 	gac.friction = 0.F;
 	m_entityManager.addComponent<ska::GravityAffectedComponent>(entity, std::move(gac));
-
-	ska::MovementComponent mc;
-	ska::PositionComponent pc;
-	if (ska::NumberUtils::random(0, 1)) {
-		pc.x = (ska::NumberUtils::random(0, screenBox.w) - at.getWidth() - 10);
-		pc.y = 10;
-		mc.vy = 5.F;
-	} else {
-		bool left = ska::NumberUtils::random(0, 1);
-		pc.x = left ? 10 : screenBox.w;
-		pc.y = (ska::NumberUtils::random(0, screenBox.h) - at.getHeight() - 10);
-		mc.vx = left ? 5.F : - 5.F;
-	}
-	pc.z = 0;
-	m_entityManager.addComponent<ska::MovementComponent>(entity, std::move(mc));
-	m_entityManager.addComponent<ska::PositionComponent>(entity, std::move(pc));
 
 	m_entityManager.addComponent<ska::CollidableComponent>(entity, ska::CollidableComponent());
 	ska::HitboxComponent hc;
@@ -126,7 +110,56 @@ ska::EntityId TerminalFactory::createEnemyStringEntity(ska::EntityManager& m_ent
 	return entity;
 }
 
-//factory
+ska::EntityId TerminalFactory::createEnemyStringEntity(ska::EntityManager& m_entityManager, ska::Rectangle& screenBox) {
+	auto entity = createBaseEnemyStringEntity(m_entityManager);
+
+	auto& gc = m_entityManager.getComponent<ska::GraphicComponent>(entity);
+	auto& at = gc.sprites[0];
+
+	ska::MovementComponent mc;
+	ska::PositionComponent pc;
+	if (ska::NumberUtils::random(0, 1)) {
+		pc.x = (ska::NumberUtils::random(0, screenBox.w) - at.getWidth() - 10);
+		pc.y = 10;
+		mc.vy = 5.F;
+	} else {
+		bool left = ska::NumberUtils::random(0, 1);
+		pc.x = left ? 10 : screenBox.w;
+		pc.y = (ska::NumberUtils::random(0, screenBox.h) - at.getHeight() - 10);
+		mc.vx = left ? 5.F : -5.F;
+	}
+	pc.z = 0;
+	m_entityManager.addComponent<ska::MovementComponent>(entity, std::move(mc));
+	m_entityManager.addComponent<ska::PositionComponent>(entity, std::move(pc));
+	return entity;
+}
+
+ska::EntityId TerminalFactory::createBossEnemyStringEntity(ska::EntityManager& m_entityManager, ska::Point<int>& pos, ska::EntityId poa) {
+	auto entity = createBaseEnemyStringEntity(m_entityManager);
+
+	ska::MovementComponent mc;
+	ska::PositionComponent pc;
+	pc.x = pos.x;
+	pc.y = pos.y;
+	pc.z = 0;
+
+	auto& poaPos = m_entityManager.getComponent<ska::PositionComponent>(poa);
+	ska::Point<float> diff(pos.x - poaPos.x, pos.y - poaPos.y);
+	const auto& pp = ska::PolarPoint<float>::polar(diff.x, diff.y);
+	const auto& resultPoint = ska::Point<float>::cartesian(5.F, pp.angle);
+	
+	mc.vx -= resultPoint.x;
+	mc.vy -= resultPoint.y;
+
+	m_entityManager.addComponent<ska::MovementComponent>(entity, std::move(mc));
+	m_entityManager.addComponent<ska::PositionComponent>(entity, std::move(pc));
+
+	auto& ec = m_entityManager.getComponent<EnemyComponent>(entity);
+	ec.createdFromBoss = true;
+
+	return entity;
+}
+
 ska::EntityId TerminalFactory::createTopAndBottomBoundaries(ska::EntityManager& m_entityManager, int pos, ska::Rectangle screenBox) {
 	auto entity = m_entityManager.createEntity();
 	m_entityManager.addComponent<ska::GravityAffectedComponent>(entity, ska::GravityAffectedComponent());
@@ -162,7 +195,6 @@ ska::EntityId TerminalFactory::createPointOfAttraction(ska::EntityManager& entit
 	at.load("Resources/Sprites/0.png", 2, 1, 2);
 	at.setDelay(500);
 	gc.animatedSprites.push_back(at);
-	
 
 	entityManager.addComponent<ska::CollidableComponent>(entity, ska::CollidableComponent());
 	ska::HitboxComponent hc;
@@ -189,6 +221,53 @@ ska::EntityId TerminalFactory::createPointOfAttraction(ska::EntityManager& entit
 	pc.y = pos.y;
 	pc.z = 0;
 	entityManager.addComponent<ska::PositionComponent>(entity, std::move(pc));
+
+	return entity;
+}
+
+ska::EntityId TerminalFactory::createEnemyBossEntity(ska::EntityManager& entityManager, const ska::Rectangle& screenBox) {
+	auto entity = entityManager.createEntity();
+	ska::GraphicComponent gc;
+	ska::Texture at;
+
+	EnemyComponent ec;
+	ec.life = 500;
+	ec.dieOnBorder = false;
+	entityManager.addComponent<EnemyComponent>(entity, std::move(ec));
+
+	at.loadFromText(96, "§BUG§", ska::Color(0xFF, 0xFF, 0xFF, 0xFF));
+	gc.sprites.push_back(at);
+	entityManager.addComponent<ska::GraphicComponent>(entity, std::move(gc));
+
+	ska::GravityAffectedComponent gac;
+	gac.friction = std::numeric_limits<float>::max()*0.03F;
+	entityManager.addComponent<ska::GravityAffectedComponent>(entity, std::move(gac));
+	
+	ska::MovementComponent mc;
+	
+	ska::PositionComponent pc;
+	pc.x = screenBox.w / 2 - at.getWidth() / 2;
+	pc.y = -10;
+	pc.z = 0;
+
+	BossEnemyComponent bec;
+	bec.spawnPoint.push_back(ska::Point<int>(pc.x - 150, 150));
+	bec.spawnPoint.push_back(ska::Point<int>(screenBox.w / 2 + at.getWidth() / 2 + 10, 150));
+	entityManager.addComponent<BossEnemyComponent>(entity, std::move(bec));
+
+	entityManager.addComponent<ska::MovementComponent>(entity, std::move(mc));
+	entityManager.addComponent<ska::PositionComponent>(entity, std::move(pc));
+	entityManager.addComponent<ska::CollidableComponent>(entity, ska::CollidableComponent());
+	
+	ska::HitboxComponent hc;
+	hc.height = at.getHeight();
+	hc.width = at.getWidth();
+	entityManager.addComponent<ska::HitboxComponent>(entity, std::move(hc));
+
+	ska::ForceComponent fc;
+	fc.bounciness = 1.F;
+	fc.weight = std::numeric_limits<float>::max();
+	entityManager.addComponent<ska::ForceComponent>(entity, std::move(fc));
 
 	return entity;
 }

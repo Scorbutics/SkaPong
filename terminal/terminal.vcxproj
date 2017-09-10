@@ -114,6 +114,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;ska_core.lib;ska_draw.lib;ska_audio.lib;ska_physic.lib;ska_gui.lib;ska_particle.lib;SDL2_gif.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,6 +133,9 @@
   <ItemGroup>
     <ClInclude Include="AgglomerateGravitySystem.h" />
     <ClInclude Include="AI.h" />
+    <ClInclude Include="BossEnemyComponent.h" />
+    <ClInclude Include="BossEnemySpawnSystem.h" />
+    <ClInclude Include="BossSpawnTask.h" />
     <ClInclude Include="CharacterComponent.h" />
     <ClInclude Include="CountdownTimeEventListener.h" />
     <ClInclude Include="EnemyComponent.h" />
@@ -141,16 +145,22 @@
     <ClInclude Include="KeyboardInputTerminalContext.h" />
     <ClInclude Include="EnemyAllyCollisionResponse.h" />
     <ClInclude Include="LetterDeleterSystem.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="StateTerminalBoss.h" />
+    <ClInclude Include="StateTerminalPath.h" />
     <ClInclude Include="TerminalFactory.h" />
     <ClInclude Include="StateTerminalGame.h" />
     <ClInclude Include="StateScreenTitle.h" />
     <ClInclude Include="TerminalGameEventDispatcher.h" />
     <ClInclude Include="TerminalGUIEvent.h" />
     <ClInclude Include="TerminalInputSystem.h" />
+    <ClInclude Include="TerminalParticleFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AgglomerateGravitySystem.cpp" />
     <ClCompile Include="AI.cpp" />
+    <ClCompile Include="BossEnemySpawnSystem.cpp" />
+    <ClCompile Include="BossSpawnTask.cpp" />
     <ClCompile Include="CountdownTimeEventListener.cpp" />
     <ClCompile Include="FadeBackgroundRenderer.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -158,10 +168,19 @@
     <ClCompile Include="KeyboardInputTerminalContext.cpp" />
     <ClCompile Include="EnemyAllyCollisionResponse.cpp" />
     <ClCompile Include="LetterDeleterSystem.cpp" />
+    <ClCompile Include="StateTerminalBoss.cpp" />
+    <ClCompile Include="StateTerminalPath.cpp" />
     <ClCompile Include="TerminalFactory.cpp" />
     <ClCompile Include="StateTerminalGame.cpp" />
     <ClCompile Include="StateScreenTitle.cpp" />
     <ClCompile Include="TerminalInputSystem.cpp" />
+    <ClCompile Include="TerminalParticleFactory.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="poa.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

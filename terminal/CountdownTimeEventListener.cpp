@@ -6,7 +6,7 @@
 #include "TerminalGUIEvent.h"
 #include "GUI.h"
 #include "Utils/StringUtils.h"
-#include "Exceptions/StateDiedException.h"
+#include "Exceptions/TerminateProcessException.h"
 
 CountdownTimeEventListener::CountdownTimeEventListener(TerminalGameEventDispatcher& ged, GUI& gui, const ska::Rectangle& screenBox) :
 	ska::SubObserver<TerminalGUIEvent>(std::bind(&CountdownTimeEventListener::onTerminalGUIUpdateEvent, this, std::placeholders::_1), ged), m_score(0), m_currentTime(0),
@@ -42,7 +42,7 @@ bool CountdownTimeEventListener::onTerminalGUIUpdateEvent(TerminalGUIEvent& tge)
 		m_currentTime += tge.time;
 		auto remainingTime = 2 * 60 * 1000L - m_currentTime;
 		if (remainingTime < 0) {
-			throw ska::IllegalStateException("time over");
+			throw ska::TerminateProcessException("time over");
 		}
 		m_timeLabel->modifyText(ConvertToMinutesDisplay(remainingTime));
 		break;

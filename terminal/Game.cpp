@@ -3,6 +3,8 @@
 #include "StateScreenTitle.h"
 #include "Draw/SDLFont.h"
 #include "KeyboardInputTerminalContext.h"
+#include <fstream>
+#include "MessagePopup.h"
 
 const Uint32 Game::COLOR_PALET[] = {
 	0xFD2567FF,
@@ -22,7 +24,12 @@ ska::GameApp& ska::GameApp::get() {
 	return wgc;
 }
 
+Game::Game() :
+	m_backgroundMusic("Resources/Music/point_of_attraction.mp3") {
+}
+
 void Game::init() {
+
 	/* Configure inputs types */
 	addInputContext<KeyboardInputTerminalContext>(ska::EnumContextManager::CONTEXT_MAP);
 	addInputContext<ska::KeyboardInputGUIContext>(ska::EnumContextManager::CONTEXT_GUI);
@@ -35,6 +42,11 @@ void Game::init() {
 	
 	m_gui = std::make_unique<GUI>(m_eventDispatcher);
 
+	m_mainWindow->setWindowIcon("Resources/Sprites/poa_icon.bmp");
+
+	ska::SoundEvent se(&m_backgroundMusic, ska::PLAY_MUSIC);
+	m_eventDispatcher.ska::Observable<ska::SoundEvent>::notifyObservers(se);
+
 	navigateToState<StateScreenTitle>(*m_gui.get());
 }
 
@@ -46,5 +58,8 @@ int Game::onTerminate(ska::TerminateProcessException& tpe) {
 int Game::onException(ska::GenericException& e) {
 	/* Handles Generics Game exceptions */
 	std::cerr << e.what() << std::endl;
+	std::ofstream ferr;
+	ferr.open("errors.txt");
+	ferr << e.what() << std::endl;
 	return 0;
 }

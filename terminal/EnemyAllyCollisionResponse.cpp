@@ -9,6 +9,7 @@
 #include "EnemyComponent.h"
 #include "ECS/Basics/Physic/ForceComponent.h"
 #include "ECS/Basics/Input/InputComponent.h"
+#include "BossEnemyComponent.h"
 
 EnemyAllyCollisionResponse::EnemyAllyCollisionResponse(ska::EntityManager & entityManager, TerminalGameEventDispatcher& eventDispatcher, ska::CameraSystem& cameraSystem) :
 	SubObserver<ska::CollisionEvent>(std::bind(&EnemyAllyCollisionResponse::onCollisionEvent, this, std::placeholders::_1), eventDispatcher),
@@ -25,23 +26,6 @@ bool EnemyAllyCollisionResponse::isLetterEnemyCollision(ska::CollisionEvent& ce)
 }
 
 bool EnemyAllyCollisionResponse::onCollisionEvent(ska::CollisionEvent & ce) const{
-	
-	//Side Collisions => win or lose
-	/*if (ce.wcollisionComponent != nullptr) {
-		auto& wcol = *ce.wcollisionComponent;
-		if ((wcol.xaxis || wcol.yaxis) && ce.entity == m_ball) {
-			if (!wcol.blockColPosX.empty()) {
-				auto& block = wcol.blockColPosX[0];
-				if (block.x <= 0) {
-					resetBallPosition();
-				} else if (block.x + 30 >= m_cameraSystem.getDisplay()->w) {					
-					resetBallPosition();
-				}
-				return true;
-			}
-		}
-		return true;
-	}*/
 	
 	//Collisions letters and enemy
 	if (ce.collisionComponent != nullptr) {
@@ -64,25 +48,42 @@ bool EnemyAllyCollisionResponse::onCollisionEvent(ska::CollisionEvent & ce) cons
 			auto notEnemy = m_entityManager.hasComponent<EnemyComponent>(col.origin) ? col.target : col.origin;			
 			auto& hcOther = m_entityManager.getComponent<ska::HitboxComponent>(notEnemy);
 			
+			auto& enemy = m_entityManager.hasComponent<EnemyComponent>(col.origin) ? col.origin : col.target;
+			auto& ec = m_entityManager.getComponent<EnemyComponent>(enemy);
+			
+			if (m_entityManager.hasComponent<EnemyComponent>(notEnemy) && ec.createdFromBoss) {
+				ce.collisionComponent = nullptr;
+				return true;
+			}
+
 			//Way of checking if it's the screen bottom/top line border
 			if(hcOther.width == m_cameraSystem.getDisplay()->w) {
-				auto& enemy = m_entityManager.hasComponent<EnemyComponent>(col.origin) ? col.origin : col.target;
-				m_entityManager.removeEntity(enemy);
+				if (ec.dieOnBorder) {
+					m_entityManager.removeEntity(enemy);
+				}
 			}
 
 			//Way of checking if it's the screen right/left line border
 			if (hcOther.height == m_cameraSystem.getDisplay()->h) {
-				auto& enemy = m_entityManager.hasComponent<EnemyComponent>(col.origin) ? col.origin : col.target;
-				m_entityManager.removeEntity(enemy);
+				if (ec.dieOnBorder) {
+					m_entityManager.removeEntity(enemy);
+				}
 			}
 
-			//Punish the player to have hit the enemy !
+			
+			
 			if(m_entityManager.hasComponent<ska::InputComponent>(notEnemy)) {
-				TerminalGUIEvent tge(UPDATE_TIME);
-				tge.time = 10000;
-				m_eventDispatcher.ska::Observable<TerminalGUIEvent>::notifyObservers(tge);
-				auto& enemy = m_entityManager.hasComponent<EnemyComponent>(col.origin) ? col.origin : col.target;
-				m_entityManager.removeEntity(enemy);
+				
+				//Punish the player to have hit the enemy !
+				if (!m_entityManager.hasComponent<BossEnemyComponent>(enemy)) {
+					TerminalGUIEvent tge(UPDATE_TIME);
+					tge.time = 10000;
+					m_eventDispatcher.ska::Observable<TerminalGUIEvent>::notifyObservers(tge);
+					m_entityManager.removeEntity(enemy);
+				} else {
+					//In case of the boss :
+					std::cout << "boss hit" << std::endl;
+				}
 			}
 		}
 	}

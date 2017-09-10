@@ -9,6 +9,8 @@
 #include "../../ska/ska_particle/ParticleSystem.h"
 #include "LetterDeleterSystem.h"
 #include "CountdownTimeEventListener.h"
+#include "StateTerminalPath.h"
+#include <type_traits>
 
 class GUI;
 
@@ -27,7 +29,7 @@ private:
 	TerminalGameEventDispatcher& m_eventDispatcher;
 	ska::EntityManager& m_entityManager;
 
-	ska::EntityCollisionResponse m_entityCollision;
+	std::unique_ptr<ska::EntityCollisionResponse> m_entityCollision;
 	ska::EntityId m_ball;
 	std::unique_ptr<EnemyAllyCollisionResponse> m_scoreMaker;
 	AI m_ai;
@@ -41,4 +43,6 @@ private:
 	CountdownTimeEventListener m_countdown;
 
 	ska::Texture m_scrollingBackgrounImage;
+	State* m_currentSubState;
+	ska::EntityId m_poa;
 };
