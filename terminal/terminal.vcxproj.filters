@@ -24,9 +24,6 @@
     <ClInclude Include="GUI.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="AI.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="StateTerminalGame.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -96,9 +93,6 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="GUI.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="AI.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="EnemyAllyCollisionResponse.cpp">

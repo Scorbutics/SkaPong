@@ -4,7 +4,6 @@
 #include "Data/Events/ExtensibleGameEventDispatcher.h"
 #include "Physic/System/EntityCollisionResponse.h"
 #include "EnemyAllyCollisionResponse.h"
-#include "AI.h"
 #include "FadeBackgroundRenderer.h"
 #include "../../ska/ska_particle/ParticleSystem.h"
 #include "LetterDeleterSystem.h"
@@ -32,7 +31,6 @@ private:
 	std::unique_ptr<ska::EntityCollisionResponse> m_entityCollision;
 	ska::EntityId m_ball;
 	std::unique_ptr<EnemyAllyCollisionResponse> m_scoreMaker;
-	AI m_ai;
 	ska::Rectangle m_screenBox;
 	ska::EntityId m_enemyBar;
 	GUI& m_gui;

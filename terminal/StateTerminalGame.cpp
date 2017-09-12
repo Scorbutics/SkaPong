@@ -26,7 +26,6 @@ StateTerminalGame::StateTerminalGame(StateData& data, ska::StateHolder & sh, GUI
 	m_cameraSystem(nullptr),
 	m_eventDispatcher(data.m_eventDispatcher),
 	m_entityManager(data.m_entityManager),
-	m_ai(data.m_entityManager),
 	m_gui(gui),
 	m_countdown(data.m_eventDispatcher, m_gui, ska::Rectangle{ 0, 0, static_cast<int>(windowWidth), static_cast<int>(windowHeight) }) {
 	m_cameraSystem = addLogic<ska::CameraFixedSystem>(windowWidth, windowHeight, ska::Point<int>());
@@ -77,8 +76,8 @@ void StateTerminalGame::onEventUpdate(unsigned int ellapsedTime) {
 		m_eventDispatcher.ska::Observable<TerminalGUIEvent>::notifyObservers(tge);
 
 		static auto swaped = false;
-		/* Let's go to the boss after 80 seconds ! */
-		if(totalEllapsedTime > 80000 && !swaped) {
+		/* Let's go to the boss after 70 seconds ! */
+		if(totalEllapsedTime > 70000 && !swaped) {
 			swaped = true;
 			removeSubState(*m_currentSubState);
 			m_currentSubState = addSubState<StateTerminalBoss>(*m_letterDeleterSystem, m_screenBox, m_poa);
