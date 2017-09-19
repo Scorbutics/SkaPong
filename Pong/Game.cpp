@@ -4,9 +4,9 @@
 #include "Draw/SDLFont.h"
 #include "KeyboardInputPongContext.h"
 
-ska::GameApp& ska::GameApp::get() {
-	static Game wgc;
-	wgc.init();
+std::unique_ptr<ska::GameApp> ska::GameApp::get() {
+	auto wgc = std::make_unique<Game>();
+	wgc->init();
 	return wgc;
 }
 

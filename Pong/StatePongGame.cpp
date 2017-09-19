@@ -37,7 +37,7 @@ StatePongGame::StatePongGame(StateData& data, ska::StateHolder & sh, unsigned in
 
 	ska::InputComponent ic;
 	ic.movePower = std::numeric_limits<float>::max() * 0.5F;
-	m_entityManager.addComponent<ska::InputComponent>(blockA, ic);
+	m_entityManager.addComponent<ska::InputComponent>(blockA, std::move(ic));
 
 	m_scoreMaker = std::make_unique<PongBallGoalCollisionResponse>(m_entityManager, m_eventDispatcher, *m_cameraSystem, m_ball, m_enemyBar, blockA);
 }
