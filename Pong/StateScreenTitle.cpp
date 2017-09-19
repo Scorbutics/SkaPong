@@ -13,7 +13,7 @@ StateScreenTitle::StateScreenTitle(StateData & data, ska::StateHolder & sh):
 	SubObserver(std::bind(&StateScreenTitle::onGameEvent, this, std::placeholders::_1), static_cast<ska::Observable<ska::GameEvent>&>(data.m_eventDispatcher)),
 	m_gui(data.m_eventDispatcher),
 	m_pressStartWindow(nullptr) {
-	
+
 	auto& backgroundImageWindow = m_gui.addWindow<ska::WindowIG<>>("backgroundImageWindow", ska::Rectangle{ 0,0,0,0 }, "");
 	m_backgroundImage = &backgroundImageWindow.addWidget<ska::Image>(screenTitleTheme + "background.png", ska::Point<int>(), false, nullptr);
 
@@ -21,7 +21,6 @@ StateScreenTitle::StateScreenTitle(StateData & data, ska::StateHolder & sh):
 	ska::Point<int> buttonPos(3, 1);
 	m_pressStartWindow->addWidget<ska::Button>(buttonPos, screenTitleTheme + "button", nullptr, [&](ska::Widget *, ska::ClickEvent& ce) {
 		if (ce.getState() == ska::MOUSE_RELEASE) {
-			//std::cout << "lol" << std::endl;
 			makeNextState<StatePongGame>(m_backgroundImage->getBox().w, m_backgroundImage->getBox().h);
 		}
 	});

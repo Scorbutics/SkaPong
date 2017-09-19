@@ -9,3 +9,5 @@ Debug
 *.idb
 *.pdb
 *.dll
+bin
+obj

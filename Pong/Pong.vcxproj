@@ -132,24 +132,20 @@
   <ItemGroup>
     <ClInclude Include="AI.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GUI.h" />
     <ClInclude Include="KeyboardInputPongContext.h" />
     <ClInclude Include="PongBallGoalCollisionResponse.h" />
     <ClInclude Include="PongFactory.h" />
     <ClInclude Include="StatePongGame.h" />
     <ClInclude Include="StateScreenTitle.h" />
-    <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AI.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="KeyboardInputPongContext.cpp" />
     <ClCompile Include="PongBallGoalCollisionResponse.cpp" />
     <ClCompile Include="PongFactory.cpp" />
     <ClCompile Include="StatePongGame.cpp" />
     <ClCompile Include="StateScreenTitle.cpp" />
-    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

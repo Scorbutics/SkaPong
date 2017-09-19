@@ -75,22 +75,22 @@ ska::EntityId PongFactory::createPongBallEntity(ska::EntityManager& m_entityMana
 	return entity;
 }
 
-ska::EntityId PongFactory::createTopAndBottomBoundaries(ska::EntityManager& m_entityManager, bool top, ska::Rectangle screenBox) {
+ska::EntityId PongFactory::createBoundaries(ska::EntityManager& m_entityManager, int type, ska::Rectangle screenBox) {
 	auto entity = m_entityManager.createEntity();
 	m_entityManager.addComponent<ska::GravityAffectedComponent>(entity, ska::GravityAffectedComponent());
 
 	ska::MovementComponent mc;
 	m_entityManager.addComponent<ska::MovementComponent>(entity, std::move(mc));
 	ska::PositionComponent pc;
-	pc.x = 0;
-	pc.y = top ? -1 : screenBox.h;
+	pc.x = type == 2 ? -2 : (type == 3 ? screenBox.w + 1 : 0);
+	pc.y = type == 0 ? -2 : (type == 1 ? screenBox.h + 1 : 0);
 	pc.z = 0;
 	m_entityManager.addComponent<ska::PositionComponent>(entity, std::move(pc));
 
 	m_entityManager.addComponent<ska::CollidableComponent>(entity, ska::CollidableComponent());
 	ska::HitboxComponent hc;
-	hc.height = 1;
-	hc.width = screenBox.w;
+	hc.height = (type == 2 || type == 3) ? screenBox.h : 1;
+	hc.width = (type == 0 || type == 1) ? screenBox.w : 1;
 	m_entityManager.addComponent<ska::HitboxComponent>(entity, std::move(hc));
 
 	ska::ForceComponent fc;

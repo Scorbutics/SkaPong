@@ -11,7 +11,7 @@ PongBallGoalCollisionResponse::PongBallGoalCollisionResponse(ska::EntityManager 
 	SubObserver<ska::CollisionEvent>(std::bind(&PongBallGoalCollisionResponse::onCollisionEvent, this, std::placeholders::_1), eventDispatcher),
 	m_ball(ball),
 	m_entityManager(entityManager),
-	m_cameraSystem(cameraSystem), 
+	m_cameraSystem(cameraSystem),
 	m_barEnemy(barEnemy),
 	m_barAlly(barAlly) {}
 
@@ -32,39 +32,28 @@ bool PongBallGoalCollisionResponse::isBarCollision(ska::CollisionEvent& ce) cons
 }
 
 bool PongBallGoalCollisionResponse::onCollisionEvent(ska::CollisionEvent & ce) const{
-	
-	//Side Collisions => win or lose
-	if (ce.wcollisionComponent != nullptr) {
-		auto& wcol = *ce.wcollisionComponent;
-		if ((wcol.xaxis || wcol.yaxis) && ce.entity == m_ball) {
-			if (!wcol.blockColPosX.empty()) {
-				auto& block = wcol.blockColPosX[0];
-				if (block.x <= 0) {
-					resetBallPosition();
-				} else if (block.x + 30 >= m_cameraSystem.getDisplay()->w) {					
-					resetBallPosition();
-				}
-				return true;
-			}
-		}
-		return true;
-	}
+	if(ce.collisionComponent != nullptr) {
+        auto& col = *ce.collisionComponent;
 
-	//Collisions with bars
-	if(ce.collisionComponent != nullptr && isBarCollision(ce)) {
-		//when collided with an entity, put a lateral acceleration on the ball depending on the velocity of the entity
-		auto& col = *ce.collisionComponent;
-		
-		auto entity = col.origin == m_ball ? col.target : col.origin;
-		
-		auto& mc = m_entityManager.getComponent<ska::MovementComponent>(entity);
-		auto& fcBall = m_entityManager.getComponent<ska::ForceComponent>(m_ball);
-		auto& pcBall = m_entityManager.getComponent<ska::PositionComponent>(m_ball);
-		auto& pcBar = m_entityManager.getComponent<ska::PositionComponent>(entity);
-		fcBall.y += mc.vy * 0.05F;
-		fcBall.x += mc.vy * 0.05F * (pcBar.x > pcBall.x ? -1 : 1);
-		return true;
-	}
+        auto entity = col.origin == m_ball ? col.target : col.origin;
+        auto& pcBall = m_entityManager.getComponent<ska::PositionComponent>(m_ball);
+
+        if(isBarCollision(ce)) {
+            //when collided with an entity, put a lateral acceleration on the ball depending on the velocity of the entity
+            auto& mc = m_entityManager.getComponent<ska::MovementComponent>(entity);
+            auto& fcBall = m_entityManager.getComponent<ska::ForceComponent>(m_ball);
+            auto& pcEntity = m_entityManager.getComponent<ska::PositionComponent>(entity);
+            fcBall.y += mc.vy * 0.05F;
+            return true;
+        }
+        auto& hitboxEntity = m_entityManager.getComponent<ska::HitboxComponent>(entity);
+
+        //when collided with left and right sides boundaries
+        if(hitboxEntity.width <= 1 || pcBall.x < 30 || pcBall.x >= m_cameraSystem.getDisplay()->w - 30) {
+            resetBallPosition();
+            return true;
+        }
+    }
 
 	return false;
 }
