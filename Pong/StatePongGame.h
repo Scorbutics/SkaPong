@@ -11,6 +11,7 @@ class StatePongGame :
 public:
 	StatePongGame(StateData& data, ska::StateHolder& sh, unsigned int windowWidth, unsigned int windowHeight);
 	virtual void onEventUpdate(unsigned int ellapsedTime) override;
+	virtual void beforeLoad(std::unique_ptr<State>*) override;
 	virtual ~StatePongGame() = default;
 
 private:
