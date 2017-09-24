@@ -1,7 +1,6 @@
 #pragma once
 #include "Core/GameCore.h"
 #include "ECS/EntityManager.h"
-#include "Data/Events/GameEventDispatcher.h"
 #include "Draw/VectorDrawableContainer.h"
 #include "Audio/SoundRenderer.h"
 #include "Data/Events/ExtensibleGameEventDispatcher.h"

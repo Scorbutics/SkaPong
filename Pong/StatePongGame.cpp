@@ -5,7 +5,6 @@
 #include "Physic/System/CollisionSystem.h"
 #include "Physic/System/GravitySystem.h"
 #include "Inputs/System/InputSystem.h"
-#include "Physic/System/WorldCollisionSystem.h"
 #include "PongFactory.h"
 #include "PongBallGoalCollisionResponse.h"
 

@@ -3,7 +3,8 @@
 #include "KeyboardInputPongContext.h"
 
 
-KeyboardInputPongContext::KeyboardInputPongContext(ska::RawInputListener& ril) : KeyboardInputContext(ril) {
+KeyboardInputPongContext::KeyboardInputPongContext(ska::RawInputListener& ril) : 
+	KeyboardInputContext(ril) {
 }
 
 void KeyboardInputPongContext::buildCodeMap(std::unordered_map<int, ska::InputAction>& codeMap, std::unordered_map<int, ska::InputToggle>& toggles) {
@@ -11,5 +12,3 @@ void KeyboardInputPongContext::buildCodeMap(std::unordered_map<int, ska::InputAc
 	toggles[SDL_SCANCODE_S] = ska::MoveDown;
 }
 
-KeyboardInputPongContext::~KeyboardInputPongContext() {
-}

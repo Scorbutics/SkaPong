@@ -1,3 +1,4 @@
+#include <SDL_stdinc.h>
 #include "PongBallGoalCollisionResponse.h"
 #include "Data/Events/ExtensibleGameEventDispatcher.h"
 #include "ECS/Basics/Physic/PositionComponent.h"
@@ -6,6 +7,7 @@
 #include "ECS/Basics/Physic/WorldCollisionComponent.h"
 #include "ECS/Basics/Physic/CollisionComponent.h"
 #include "ECS/Basics/Physic/ForceComponent.h"
+
 
 PongBallGoalCollisionResponse::PongBallGoalCollisionResponse(ska::EntityManager & entityManager, ska::ExtensibleGameEventDispatcher<>& eventDispatcher, ska::CameraSystem& cameraSystem, ska::EntityId ball, ska::EntityId barEnemy, ska::EntityId barAlly) :
 	SubObserver<ska::CollisionEvent>(std::bind(&PongBallGoalCollisionResponse::onCollisionEvent, this, std::placeholders::_1), eventDispatcher),
@@ -17,11 +19,11 @@ PongBallGoalCollisionResponse::PongBallGoalCollisionResponse(ska::EntityManager 
 
 void PongBallGoalCollisionResponse::resetBallPosition() const{
 	auto& pc = m_entityManager.getComponent<ska::PositionComponent>(m_ball);
-	pc.x = m_cameraSystem.getDisplay()->w / 2;
-	pc.y = m_cameraSystem.getDisplay()->h / 2;
+	pc.x = m_cameraSystem.getDisplay()->w / 2.F;
+	pc.y = m_cameraSystem.getDisplay()->h / 2.F;
 
 	auto& mc = m_entityManager.getComponent<ska::MovementComponent>(m_ball);
-	auto velocityPoint = ska::Point<int>::cartesian(7, ska::NumberUtils::random(-M_PI / 2 + 1, M_PI / 2 - 1) + (ska::NumberUtils::random(0, 1) * M_PI ));
+	auto velocityPoint = ska::Point<float>::cartesian(7.F, ska::NumberUtils::random(-M_PI / 2 + 1, M_PI / 2 - 1) + (ska::NumberUtils::random(0, 1) * M_PI ));
 	mc.vx = velocityPoint.x;
 	mc.vy = velocityPoint.y;
 }
