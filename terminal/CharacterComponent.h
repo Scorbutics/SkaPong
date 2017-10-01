@@ -1,6 +1,6 @@
 #pragma once
 
-struct CharacterComponent : public ska::Component {
+struct CharacterComponent : public ska::SerializableComponent {
 	CharacterComponent() : life(1) {}
 	int life;
 };

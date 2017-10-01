@@ -1,8 +1,8 @@
 #pragma once
-#include "ECS/Component.h"
+#include "ECS/SerializableComponent.h"
 #include "EnemyAllyCollisionResponse.h"
 
-struct EnemyComponent : public ska::Component {
+struct EnemyComponent : public ska::SerializableComponent {
 	EnemyComponent() : 
 		life(0),
 		dieOnBorder(true),

@@ -18,10 +18,10 @@ const Uint32 Game::COLOR_PALET[] = {
 	0x3224E4FF
 };
 
-ska::GameApp& ska::GameApp::get() {
-	static Game wgc;
-	wgc.init();
-	return wgc;
+std::unique_ptr<ska::GameApp> ska::GameApp::get() {
+	auto wgc = std::make_unique<Game>();
+	wgc->init();
+	return std::move(wgc);
 }
 
 Game::Game() :

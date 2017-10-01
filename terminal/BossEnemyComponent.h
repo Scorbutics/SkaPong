@@ -1,7 +1,7 @@
 #pragma once
-#include "ECS/Component.h"
+#include "ECS/SerializableComponent.h"
 
 struct BossEnemyComponent :
-	public ska::Component {
+	public ska::SerializableComponent {
 	std::vector<ska::Point<int>> spawnPoint;
 };
